@@ -65,13 +65,33 @@ class Order {
     }
 
     public function saveToFile(){
-        $file = fopen("orders.txt", "w");
-        fwrite($file, $this->createFileString());
-        fclose($file);
+        try{
+            $file = fopen("orders.txt", "a");
+            fwrite($file, "\n".$this->createFileString());
+            return true;
+        }catch (Exception $err){
+            return false;
+        }finally{
+            fclose($file);
+        }
+
     }
 
     private function createFileString(){
-       return $this->customer->getName().";".$this->ticket_type.";".$this->ticket_count;
+       return $this->customer->getName().";".$this->customer->getEmail().";".$this->customer->getPhonenr().";".$this->ticket_type.";".$this->ticket_count;
 
     }
+}
+
+class ObjectToTextTransformer{
+
+    public function createTableRowFromArray($array){
+        $string = "<tr>";
+        foreach ($array as $value){
+            $string .= "<td>".$value."<td>";
+        }
+        $string .= "</tr>";
+        return $string;
+    }
+
 }

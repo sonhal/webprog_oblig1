@@ -13,6 +13,8 @@
     <input type="text" name="firstname"><br>
     Last name:<br>
     <input type="text" name="lastname"><br>
+    Email:<br>
+    <input type="text" name="email"><br>
     Phone nr:<br>
     <input type="tel" name="phonenr"><br><br>
     <select name="ticket_type">

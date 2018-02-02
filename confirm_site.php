@@ -1,17 +1,23 @@
 <?php
+session_start();
+
 include("model.php");
+
 
 if (isset($_POST["submit"])) {
 
     $firstname = $_POST["firstname"];
     $lastname = $_POST["lastname"];
+    $email = $_POST["email"];
     $phonenr = $_POST["phonenr"];
     $ticket_type = $_POST["ticket_type"];
     $ticket_count = $_POST["ticket_count"];
 
 
-    $customer = new Customer($firstname,$phonenr,"test");
+    $customer = new Customer($firstname." ".$lastname,$phonenr,$email);
     $order = new Order($ticket_type, $ticket_count, $customer);
+
+    $_SESSION["order"] = serialize($order);
 }
 
 function is_valid_ticket_data($ticket_type, $ticket_count){
@@ -52,11 +58,17 @@ echo "<tr> <td>Name:</td> <td>". $customer->getName()."</td>";
 echo "<tr> <td>Phone nr:</td> <td>". $customer->getPhonenr()."</td>";
 echo "<tr> <td>Email:</td> <td>". $customer->getEmail()."</td>";
 echo "<tr> <td>Ticket type:</td> <td>". $order->getTicket_type()."</td>";
-echo "<tr> <td>Ticket count:</td> <td>". $order->getTicket_count()."</td>"
+echo "<tr> <td>Ticket count:</td> <td>". $order->getTicket_count()."</td>";
+echo "<tr> <td>Date:</td> <td>". date("d-m-Y",time())."</td>";
+
 ?>
 </table>
 <form action="complete_order.php" method="post">
-    <input type="submit" value="Confirm" name="submit">
+    <input type="submit" value="Confirm order" name="submit">
+</form>
+
+<form action="index.php" method="post">
+    <input type="submit" value="Cancel order" name="submit">
 </form>
 
 </body>
